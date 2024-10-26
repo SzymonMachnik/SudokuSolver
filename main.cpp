@@ -127,12 +127,20 @@ int main(int, char**)
         //Point Of Interest///////////////////////////////////////
         
         ImGui::SetNextWindowPos(ImVec2(368, 48));
-        ImGui::SetNextWindowSize(ImVec2(550, 546));
+        ImGui::SetNextWindowSize(ImVec2(561, 561));
         if (ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
+            int extraI = 0;
             for (int i = 0; i < 9; i++) {
+                if (i % 3 == 0 && i != 0) {
+                    extraI += 5;
+                }
+                int extraJ = 0;
                 for (int j = 0; j < 9; j++) {
-                    ImGui::SetCursorPos(ImVec2(5 + j * 60, 5 + i * 60));
-                    if (ImGui::Button("test", ImVec2(55, 55))) {
+                    if (j % 3 == 0 && j != 0) {
+                        extraJ += 5;
+                    }
+                    ImGui::SetCursorPos(ImVec2(8 + extraJ + j * 60, 8 + extraI + i * 60));
+                    if (ImGui::Button(to_string(i * 10 + j).c_str(), ImVec2(55, 55))) {
                         cout << "Clicked" << endl;
                     }
                 }
