@@ -1,2 +1,2 @@
 all:
-      C:\msys64\ucrt64\bin\g++.exe -fdiagnostics-color=always -std=c++23 -g C:\SudokuSolver\main.cpp C:\SudokuSolver\imgui\*.cpp -o C:\SudokuSolver\main.exe -I C:\SudokuSolver\imgui -ld3d9 -ldwmapi -lgdi32
+    g++ -fdiagnostics-color=always -std=c++23 -g C:\SudokuSolver\main.cpp C:\SudokuSolver\imgui\*.cpp -o C:\SudokuSolver\main.exe -I C:\SudokuSolver\imgui -ld3d9 -ldwmapi -lgdi32

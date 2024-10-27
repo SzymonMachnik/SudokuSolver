@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
@@ -19,6 +20,100 @@ bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+
+
+const int BOARD_SIZE = 9;
+const int MAX_INPUT_LENGTH = 2;
+
+// Tworzymy planszę, która przechowuje wskaźniki do char
+char board[BOARD_SIZE][BOARD_SIZE][MAX_INPUT_LENGTH]; // Każde pole ma maksymalnie 1 znak + null terminator
+
+void InitializeBoard() {
+    // Ustaw wszystkie elementy na '0'
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        for (int j = 0; j < BOARD_SIZE; ++j) {
+            board[i][j][0] = '-'; // Ustawia znak '0'
+            board[i][j][1] = '\0'; // Dodajemy terminator
+        }
+    }
+}
+
+void RenderImGui() {
+    ImGui::SetNextWindowPos(ImVec2(368, 48));
+    ImGui::SetNextWindowSize(ImVec2(561, 561));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
+
+    if (ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
+        int extraI = 0;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (i % 3 == 0 && i != 0) {
+                extraI += 5;
+            }
+            int extraJ = 0;
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (j % 3 == 0 && j != 0) {
+                    extraJ += 5;
+                }
+                ImGui::SetCursorPos(ImVec2(8 + extraJ + j * 60, 8 + extraI + i * 60));
+                ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+                ImGui::SetNextItemWidth(55.0f);
+
+                std::string id = "##" + std::to_string(i) + "_" + std::to_string(j);
+                ImGui::InputText(id.c_str(), board[i][j], MAX_INPUT_LENGTH); // Przekazujemy char array
+                //std::cout << board[i][j] << std::endl; // Wydrukuj wartość
+
+                ImGui::PopStyleColor(2);
+            }
+        }
+    }
+    ImGui::End();
+    ImGui::PopStyleColor();
+
+    ImGui::SetNextWindowPos(ImVec2(528, 640));
+    ImGui::SetNextWindowSize(ImVec2(225, 75));
+    if (ImGui::Begin("Button", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+        if (ImGui::Button("Solve!", ImVec2(210, 59))) {
+            // for (int i = 0; i < BOARD_SIZE; i++) {
+            //     for (int j = 0; j < BOARD_SIZE; j++) {
+            //         cout << board[i][j] << " " << flush;
+            //     }
+            //     cout << endl;
+            // }
+            cout << "test" << endl;
+            bool ableToSolve = true;
+            vector<vector<char>> boardToSolve;
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                vector<char> row;
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if (board[i][j][0] == '-') {
+                        row.push_back('.');
+                    } else if (board[i][j][0] - '0' >= 1 && board[i][j][0] - '0' <= 9) {
+                        row.push_back(board[i][j][0]);
+                    } else if (strlen(board[i][j]) == 0) {
+                        row.push_back('.');
+                    } else {
+                        ableToSolve = false;
+                        break;
+                    }
+                }
+                boardToSolve.push_back(row);
+            }
+            if (ableToSolve) {
+                for (auto r : boardToSolve) {
+                    for (auto num : r) {
+                        cout << num << " " << flush;
+                    }
+                    cout << endl;
+                }
+            }
+            if (!ableToSolve) cout << "NOT ABLE TO SOLVE" << endl;
+        }
+
+    } 
+    ImGui::End();
+}
 
 // Main code
 int main(int, char**)
@@ -72,15 +167,23 @@ int main(int, char**)
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(153, 153, 153, 255);
+
+
     // Our state
     bool show_demo_window = true;
     bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
+    // ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    
+    ImVec4 clear_color = ImVec4(130, 202, 237, 255);
+    
     bool testBool = false;
         
     // Main loop
     bool done = false;
+    InitializeBoard();
     while (!done)
     {
         // Poll and handle messages (inputs, window resize, etc.)
@@ -125,36 +228,11 @@ int main(int, char**)
         ImGui::NewFrame();
 
         //Point Of Interest///////////////////////////////////////
+
         
-        ImGui::SetNextWindowPos(ImVec2(368, 48));
-        ImGui::SetNextWindowSize(ImVec2(561, 561));
-        if (ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
-            int extraI = 0;
-            for (int i = 0; i < 9; i++) {
-                if (i % 3 == 0 && i != 0) {
-                    extraI += 5;
-                }
-                int extraJ = 0;
-                for (int j = 0; j < 9; j++) {
-                    if (j % 3 == 0 && j != 0) {
-                        extraJ += 5;
-                    }
-                    ImGui::SetCursorPos(ImVec2(8 + extraJ + j * 60, 8 + extraI + i * 60));
-                    if (ImGui::Button(to_string(i * 10 + j).c_str(), ImVec2(55, 55))) {
-                        cout << "Clicked" << endl;
-                    }
-                }
-            }
-        } ImGui::End();
+        RenderImGui();
 
-        ImGui::SetNextWindowPos(ImVec2(528, 640));
-        ImGui::SetNextWindowSize(ImVec2(225, 75));
-        if (ImGui::Begin("Button", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
-            if (ImGui::Button("Solve!", ImVec2(210, 59))) {
-                cout << "Clicked" << endl;
-            }
 
-        } ImGui::End();
 
 
         // Rendering
