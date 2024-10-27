@@ -22,19 +22,67 @@ void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
+bool isValid(int r, int c, char value, vector<vector<char>>& board) {
+  for (int i = 0; i < 9; i++) {
+    if (board[i][c] == value) return false;
+
+    if (board[r][i] == value) return false;
+
+    if(board[3*(r/3) + i/3][3*(c/3) + (i%3)] == value)return false;
+  }
+  return true;
+}
+
+void backTrack(vector<vector<char>>& boardOriginal, int r, int c, bool &solved) {
+  if (solved) return;
+  if (r == 9 && c == 8) {
+    solved = true;
+    return;
+  }
+  if (r == 9) {
+    r = 0; 
+    c++;
+  }
+
+  if (boardOriginal[r][c] == '.') {
+    for (int i = 1; i < 10; i++) {
+        
+      if (isValid(r, c, i + '0', boardOriginal)) {
+        char value = i + '0';
+        boardOriginal[r][c] = value;
+
+        backTrack(boardOriginal, r + 1, c, solved);
+
+        if (solved) return;
+        
+        boardOriginal[r][c] = '.';
+      }
+
+    }
+  } else {
+    backTrack(boardOriginal, r + 1, c, solved);
+  }
+  
+  return;
+}
+    
+void solveSudoku(vector<vector<char>>& board) {
+    bool solved = false;
+    backTrack(board, 0, 0, solved);
+    return;
+}
 
 const int BOARD_SIZE = 9;
 const int MAX_INPUT_LENGTH = 2;
 
-// Tworzymy planszę, która przechowuje wskaźniki do char
-char board[BOARD_SIZE][BOARD_SIZE][MAX_INPUT_LENGTH]; // Każde pole ma maksymalnie 1 znak + null terminator
+
+char board[BOARD_SIZE][BOARD_SIZE][MAX_INPUT_LENGTH];
 
 void InitializeBoard() {
-    // Ustaw wszystkie elementy na '0'
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
-            board[i][j][0] = '-'; // Ustawia znak '0'
-            board[i][j][1] = '\0'; // Dodajemy terminator
+            board[i][j][0] = '-';
+            board[i][j][1] = '\0';
         }
     }
 }
@@ -44,7 +92,7 @@ void RenderImGui() {
     ImGui::SetNextWindowSize(ImVec2(561, 561));
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 
-    if (ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
+    if (ImGui::Begin("Board", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
         int extraI = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             if (i % 3 == 0 && i != 0) {
@@ -61,8 +109,7 @@ void RenderImGui() {
                 ImGui::SetNextItemWidth(55.0f);
 
                 std::string id = "##" + std::to_string(i) + "_" + std::to_string(j);
-                ImGui::InputText(id.c_str(), board[i][j], MAX_INPUT_LENGTH); // Przekazujemy char array
-                //std::cout << board[i][j] << std::endl; // Wydrukuj wartość
+                ImGui::InputText(id.c_str(), board[i][j], MAX_INPUT_LENGTH); 
 
                 ImGui::PopStyleColor(2);
             }
@@ -71,9 +118,9 @@ void RenderImGui() {
     ImGui::End();
     ImGui::PopStyleColor();
 
-    ImGui::SetNextWindowPos(ImVec2(528, 640));
+    ImGui::SetNextWindowPos(ImVec2(368, 640));
     ImGui::SetNextWindowSize(ImVec2(225, 75));
-    if (ImGui::Begin("Button", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+    if (ImGui::Begin("SolveButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
         if (ImGui::Button("Solve!", ImVec2(210, 59))) {
             // for (int i = 0; i < BOARD_SIZE; i++) {
             //     for (int j = 0; j < BOARD_SIZE; j++) {
@@ -81,7 +128,6 @@ void RenderImGui() {
             //     }
             //     cout << endl;
             // }
-            cout << "test" << endl;
             bool ableToSolve = true;
             vector<vector<char>> boardToSolve;
             for (int i = 0; i < BOARD_SIZE; i++) {
@@ -101,14 +147,38 @@ void RenderImGui() {
                 boardToSolve.push_back(row);
             }
             if (ableToSolve) {
-                for (auto r : boardToSolve) {
-                    for (auto num : r) {
-                        cout << num << " " << flush;
+                solveSudoku(boardToSolve);
+            } else { 
+                cout << "NOT ABLE TO SOLVE" << endl;
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        board[i][j][0] = '-';
+                        board[i][j][1] = '\0'; 
                     }
-                    cout << endl;
                 }
             }
-            if (!ableToSolve) cout << "NOT ABLE TO SOLVE" << endl;
+
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    board[i][j][0] = (char)boardToSolve[i][j];
+                    board[i][j][1] = '\0'; 
+                }
+            }
+        }
+
+    } 
+    ImGui::End();
+
+    ImGui::SetNextWindowPos(ImVec2(704, 640));
+    ImGui::SetNextWindowSize(ImVec2(225, 75));
+    if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+        if (ImGui::Button("Reset", ImVec2(210, 59))) {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    board[i][j][0] = '-';
+                    board[i][j][1] = '\0';   
+                }
+            }
         }
 
     } 
@@ -140,8 +210,8 @@ int main(int, char**)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -167,6 +237,8 @@ int main(int, char**)
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
+    io.Fonts->AddFontDefault();
+    io.FontGlobalScale = 3.7f;
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_WindowBg] = ImVec4(153, 153, 153, 255);
