@@ -46,6 +46,15 @@ void resetBoard(char (&board)[9][9][2]) {
     }
 }
 
+void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], vector<vector<char>> &solvedBoard) {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            boardToPrint[i][j][0] = solvedBoard[i][j];
+            boardToPrint[i][j][1] = '\0'; 
+        }
+    }
+}
+
 
 
 // Main code
@@ -190,12 +199,7 @@ int main(int, char**)
                 }
                 if (ableToSolve) {
                     SudokuSolver.solveSudoku(boardToSolve);
-                    for (int i = 0; i < BOARD_SIZE; i++) {
-                        for (int j = 0; j < BOARD_SIZE; j++) {
-                            board[i][j][0] = (char)boardToSolve[i][j];
-                            board[i][j][1] = '\0'; 
-                        }
-                    }
+                    translateSolvedBoardIntoBoardToPrint(board, boardToSolve);
                 } else { 
                     resetBoard(board);
                 }
