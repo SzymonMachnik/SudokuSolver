@@ -79,7 +79,7 @@ void SudokuSolver::translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][
     }
 }
 
-void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &boardToSolve, bool ableToSolve) {
+void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &boardToSolve, bool &ableToSolve) {
     for (int i = 0; i < 9; i++) {
         std::vector<char> row;
         for (int j = 0; j < 9; j++) {
