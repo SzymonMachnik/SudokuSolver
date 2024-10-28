@@ -55,6 +55,25 @@ void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], vector<
     }
 }
 
+void translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], vector<vector<char>> &boardToSolve, bool ableToSolve) {
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        vector<char> row;
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board[i][j][0] == '-') {
+                row.push_back('.');
+            } else if (board[i][j][0] - '0' >= 1 && board[i][j][0] - '0' <= 9) {
+                row.push_back(board[i][j][0]);
+            } else if (board[i][j][0] == '\0') {
+                row.push_back('.');
+            } else {
+                ableToSolve = false;
+                break;
+            }
+        }
+        boardToSolve.push_back(row);
+    }
+}
+
 
 // Main code
 int main(int, char**)
@@ -180,22 +199,7 @@ int main(int, char**)
             if (ImGui::Button("Solve!", ImVec2(210, 59))) {
                 bool ableToSolve = true;
                 vector<vector<char>> boardToSolve;
-                for (int i = 0; i < BOARD_SIZE; i++) {
-                    vector<char> row;
-                    for (int j = 0; j < BOARD_SIZE; j++) {
-                        if (board[i][j][0] == '-') {
-                            row.push_back('.');
-                        } else if (board[i][j][0] - '0' >= 1 && board[i][j][0] - '0' <= 9) {
-                            row.push_back(board[i][j][0]);
-                        } else if (strlen(board[i][j]) == 0) {
-                            row.push_back('.');
-                        } else {
-                            ableToSolve = false;
-                            break;
-                        }
-                    }
-                    boardToSolve.push_back(row);
-                }
+                translateBoardToPrintIntoBoardToSolve(board, boardToSolve, ableToSolve);
                 if (ableToSolve) {
                     SudokuSolver.solveSudoku(boardToSolve);
                     translateSolvedBoardIntoBoardToPrint(board, boardToSolve);
