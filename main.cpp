@@ -28,7 +28,7 @@ const int MAX_INPUT_LENGTH = 2;
 
 char board[BOARD_SIZE][BOARD_SIZE][MAX_INPUT_LENGTH];
 
-void InitializeBoard() {
+void InitializeBoard(char (&board)[9][9][2]) {
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
             board[i][j][0] = '-';
@@ -54,7 +54,6 @@ void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], vector<
         }
     }
 }
-
 
 
 // Main code
@@ -101,7 +100,7 @@ int main(int, char**)
     SudokuSolver SudokuSolver;
     // Main loop
     bool done = false;
-    InitializeBoard();
+    InitializeBoard(board);
     while (!done)
     {
         MSG msg;
