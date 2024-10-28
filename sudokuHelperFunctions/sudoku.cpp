@@ -52,6 +52,48 @@ void SudokuSolver::solveSudoku(std::vector<std::vector<char>>& board) {
     return;
 }
 
-// void SudokuSolver::renderBoard(char board[9][9][2]) {
-//     // Tutaj umieść kod renderujący planszę, jeśli to potrzebne
-// }
+void SudokuSolver::InitializeBoard(char (&board)[9][9][2]) {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            board[i][j][0] = '-';
+            board[i][j][1] = '\0';
+        }
+    }
+}
+
+void SudokuSolver::resetBoard(char (&board)[9][9][2]) {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            board[i][j][0] = '-';
+            board[i][j][1] = '\0'; 
+        }
+    }
+}
+
+void SudokuSolver::translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &solvedBoard) {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            boardToPrint[i][j][0] = solvedBoard[i][j];
+            boardToPrint[i][j][1] = '\0'; 
+        }
+    }
+}
+
+void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &boardToSolve, bool ableToSolve) {
+    for (int i = 0; i < 9; i++) {
+        std::vector<char> row;
+        for (int j = 0; j < 9; j++) {
+            if (boardToPrint[i][j][0] == '-') {
+                row.push_back('.');
+            } else if (boardToPrint[i][j][0] - '0' >= 1 && boardToPrint[i][j][0] - '0' <= 9) {
+                row.push_back(boardToPrint[i][j][0]);
+            } else if (boardToPrint[i][j][0] == '\0') {
+                row.push_back('.');
+            } else {
+                ableToSolve = false;
+                break;
+            }
+        }
+        boardToSolve.push_back(row);
+    }
+}

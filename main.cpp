@@ -28,51 +28,51 @@ const int MAX_INPUT_LENGTH = 2;
 
 char board[BOARD_SIZE][BOARD_SIZE][MAX_INPUT_LENGTH];
 
-void InitializeBoard(char (&board)[9][9][2]) {
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            board[i][j][0] = '-';
-            board[i][j][1] = '\0';
-        }
-    }
-}
+// void InitializeBoard(char (&board)[9][9][2]) {
+//     for (int i = 0; i < 9; ++i) {
+//         for (int j = 0; j < 9; ++j) {
+//             board[i][j][0] = '-';
+//             board[i][j][1] = '\0';
+//         }
+//     }
+// }
 
-void resetBoard(char (&board)[9][9][2]) {
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            board[i][j][0] = '-';
-            board[i][j][1] = '\0'; 
-        }
-    }
-}
+// void resetBoard(char (&board)[9][9][2]) {
+//     for (int i = 0; i < 9; i++) {
+//         for (int j = 0; j < 9; j++) {
+//             board[i][j][0] = '-';
+//             board[i][j][1] = '\0'; 
+//         }
+//     }
+// }
 
-void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], vector<vector<char>> &solvedBoard) {
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            boardToPrint[i][j][0] = solvedBoard[i][j];
-            boardToPrint[i][j][1] = '\0'; 
-        }
-    }
-}
+// void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], vector<vector<char>> &solvedBoard) {
+//     for (int i = 0; i < 9; i++) {
+//         for (int j = 0; j < 9; j++) {
+//             boardToPrint[i][j][0] = solvedBoard[i][j];
+//             boardToPrint[i][j][1] = '\0'; 
+//         }
+//     }
+// }
 
-void translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], vector<vector<char>> &boardToSolve, bool ableToSolve) {
-    for (int i = 0; i < 9; i++) {
-        vector<char> row;
-        for (int j = 0; j < 9; j++) {
-            if (boardToPrint[i][j][0] == '-') {
-                row.push_back('.');
-            } else if (boardToPrint[i][j][0] - '0' >= 1 && boardToPrint[i][j][0] - '0' <= 9) {
-                row.push_back(boardToPrint[i][j][0]);
-            } else if (boardToPrint[i][j][0] == '\0') {
-                row.push_back('.');
-            } else {
-                ableToSolve = false;
-                break;
-            }
-        }
-        boardToSolve.push_back(row);
-    }
-}
+// void translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], vector<vector<char>> &boardToSolve, bool ableToSolve) {
+//     for (int i = 0; i < 9; i++) {
+//         vector<char> row;
+//         for (int j = 0; j < 9; j++) {
+//             if (boardToPrint[i][j][0] == '-') {
+//                 row.push_back('.');
+//             } else if (boardToPrint[i][j][0] - '0' >= 1 && boardToPrint[i][j][0] - '0' <= 9) {
+//                 row.push_back(boardToPrint[i][j][0]);
+//             } else if (boardToPrint[i][j][0] == '\0') {
+//                 row.push_back('.');
+//             } else {
+//                 ableToSolve = false;
+//                 break;
+//             }
+//         }
+//         boardToSolve.push_back(row);
+//     }
+// }
 
 
 // Main code
@@ -119,7 +119,7 @@ int main(int, char**)
     SudokuSolver SudokuSolver;
     // Main loop
     bool done = false;
-    InitializeBoard(board);
+    SudokuSolver.InitializeBoard(board);
     while (!done)
     {
         MSG msg;
@@ -199,12 +199,12 @@ int main(int, char**)
             if (ImGui::Button("Solve!", ImVec2(210, 59))) {
                 bool ableToSolve = true;
                 vector<vector<char>> boardToSolve;
-                translateBoardToPrintIntoBoardToSolve(board, boardToSolve, ableToSolve);
+                SudokuSolver.translateBoardToPrintIntoBoardToSolve(board, boardToSolve, ableToSolve);
                 if (ableToSolve) {
                     SudokuSolver.solveSudoku(boardToSolve);
-                    translateSolvedBoardIntoBoardToPrint(board, boardToSolve);
+                    SudokuSolver.translateSolvedBoardIntoBoardToPrint(board, boardToSolve);
                 } else { 
-                    resetBoard(board);
+                    SudokuSolver.resetBoard(board);
                 }
             }
 
@@ -215,7 +215,7 @@ int main(int, char**)
         ImGui::SetNextWindowSize(ImVec2(225, 75));
         if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
             if (ImGui::Button("Reset", ImVec2(210, 59))) {
-                resetBoard(board);
+                SudokuSolver.resetBoard(board);
             }
 
         } 

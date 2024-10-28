@@ -13,9 +13,12 @@ class SudokuSolver {
 
   public:
     SudokuSolver();
-    // void initializeBoard();
     void solveSudoku(std::vector<std::vector<char>>& board);
-    // void renderBoard(char board[9][9][2]);  // Przekazanie planszy do renderowania
+
+    void InitializeBoard(char (&board)[9][9][2]);
+    void resetBoard(char (&board)[9][9][2]);
+    void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &solvedBoard);
+    void translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &boardToSolve, bool ableToSolve);
 };
 
 #endif

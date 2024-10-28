@@ -5,3 +5,4 @@ roziwąż normalne sudoku
 sduoku char = normalen sudoku
 
 reset sudoku char
+
