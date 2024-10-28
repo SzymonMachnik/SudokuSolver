@@ -37,9 +37,6 @@ void InitializeBoard() {
     }
 }
 
-void RenderImGui() {
-
-}
 
 // Main code
 int main(int, char**)
