@@ -29,8 +29,8 @@ const int MAX_INPUT_LENGTH = 2;
 char board[BOARD_SIZE][BOARD_SIZE][MAX_INPUT_LENGTH];
 
 void InitializeBoard(char (&board)[9][9][2]) {
-    for (int i = 0; i < BOARD_SIZE; ++i) {
-        for (int j = 0; j < BOARD_SIZE; ++j) {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
             board[i][j][0] = '-';
             board[i][j][1] = '\0';
         }
@@ -38,8 +38,8 @@ void InitializeBoard(char (&board)[9][9][2]) {
 }
 
 void resetBoard(char (&board)[9][9][2]) {
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
             board[i][j][0] = '-';
             board[i][j][1] = '\0'; 
         }
@@ -56,14 +56,14 @@ void translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][9][2], vector<
 }
 
 void translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], vector<vector<char>> &boardToSolve, bool ableToSolve) {
-    for (int i = 0; i < BOARD_SIZE; i++) {
+    for (int i = 0; i < 9; i++) {
         vector<char> row;
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            if (board[i][j][0] == '-') {
+        for (int j = 0; j < 9; j++) {
+            if (boardToPrint[i][j][0] == '-') {
                 row.push_back('.');
-            } else if (board[i][j][0] - '0' >= 1 && board[i][j][0] - '0' <= 9) {
-                row.push_back(board[i][j][0]);
-            } else if (board[i][j][0] == '\0') {
+            } else if (boardToPrint[i][j][0] - '0' >= 1 && boardToPrint[i][j][0] - '0' <= 9) {
+                row.push_back(boardToPrint[i][j][0]);
+            } else if (boardToPrint[i][j][0] == '\0') {
                 row.push_back('.');
             } else {
                 ableToSolve = false;
