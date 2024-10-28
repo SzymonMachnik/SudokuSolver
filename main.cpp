@@ -37,6 +37,16 @@ void InitializeBoard() {
     }
 }
 
+void resetBoard(char (&board)[9][9][2]) {
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            board[i][j][0] = '-';
+            board[i][j][1] = '\0'; 
+        }
+    }
+}
+
+
 
 // Main code
 int main(int, char**)
@@ -180,21 +190,14 @@ int main(int, char**)
                 }
                 if (ableToSolve) {
                     SudokuSolver.solveSudoku(boardToSolve);
-                } else { 
-                    cout << "NOT ABLE TO SOLVE" << endl;
                     for (int i = 0; i < BOARD_SIZE; i++) {
                         for (int j = 0; j < BOARD_SIZE; j++) {
-                            board[i][j][0] = '-';
+                            board[i][j][0] = (char)boardToSolve[i][j];
                             board[i][j][1] = '\0'; 
                         }
                     }
-                }
-
-                for (int i = 0; i < BOARD_SIZE; i++) {
-                    for (int j = 0; j < BOARD_SIZE; j++) {
-                        board[i][j][0] = (char)boardToSolve[i][j];
-                        board[i][j][1] = '\0'; 
-                    }
+                } else { 
+                    resetBoard(board);
                 }
             }
 
@@ -205,12 +208,7 @@ int main(int, char**)
         ImGui::SetNextWindowSize(ImVec2(225, 75));
         if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
             if (ImGui::Button("Reset", ImVec2(210, 59))) {
-                for (int i = 0; i < BOARD_SIZE; i++) {
-                    for (int j = 0; j < BOARD_SIZE; j++) {
-                        board[i][j][0] = '-';
-                        board[i][j][1] = '\0';   
-                    }
-                }
+                resetBoard(board);
             }
 
         } 
