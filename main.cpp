@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
+#include "./sudokuHelperFunctions/sudoku.h"
 #include <d3d9.h>
 #include <tchar.h>
 
@@ -21,57 +22,6 @@ void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-
-bool isValid(int r, int c, char value, vector<vector<char>>& board) {
-  for (int i = 0; i < 9; i++) {
-    if (board[i][c] == value) return false;
-
-    if (board[r][i] == value) return false;
-
-    if(board[3*(r/3) + i/3][3*(c/3) + (i%3)] == value)return false;
-  }
-  return true;
-}
-
-void backTrack(vector<vector<char>>& boardOriginal, int r, int c, bool &solved) {
-  if (solved) return;
-  if (r == 9 && c == 8) {
-    solved = true;
-    return;
-  }
-  if (r == 9) {
-    r = 0; 
-    c++;
-  }
-
-  if (boardOriginal[r][c] == '.') {
-    for (int i = 1; i < 10; i++) {
-        
-      if (isValid(r, c, i + '0', boardOriginal)) {
-        char value = i + '0';
-        boardOriginal[r][c] = value;
-
-        backTrack(boardOriginal, r + 1, c, solved);
-
-        if (solved) return;
-        
-        boardOriginal[r][c] = '.';
-      }
-
-    }
-  } else {
-    backTrack(boardOriginal, r + 1, c, solved);
-  }
-  
-  return;
-}
-    
-void solveSudoku(vector<vector<char>>& board) {
-    bool solved = false;
-    backTrack(board, 0, 0, solved);
-    return;
-}
-
 const int BOARD_SIZE = 9;
 const int MAX_INPUT_LENGTH = 2;
 
@@ -88,101 +38,7 @@ void InitializeBoard() {
 }
 
 void RenderImGui() {
-    ImGui::SetNextWindowPos(ImVec2(368, 48));
-    ImGui::SetNextWindowSize(ImVec2(561, 561));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 
-    if (ImGui::Begin("Board", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
-        int extraI = 0;
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            if (i % 3 == 0 && i != 0) {
-                extraI += 5;
-            }
-            int extraJ = 0;
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (j % 3 == 0 && j != 0) {
-                    extraJ += 5;
-                }
-                ImGui::SetCursorPos(ImVec2(8 + extraJ + j * 60, 8 + extraI + i * 60));
-                ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
-                ImGui::SetNextItemWidth(55.0f);
-
-                std::string id = "##" + std::to_string(i) + "_" + std::to_string(j);
-                ImGui::InputText(id.c_str(), board[i][j], MAX_INPUT_LENGTH); 
-
-                ImGui::PopStyleColor(2);
-            }
-        }
-    }
-    ImGui::End();
-    ImGui::PopStyleColor();
-
-    ImGui::SetNextWindowPos(ImVec2(368, 640));
-    ImGui::SetNextWindowSize(ImVec2(225, 75));
-    if (ImGui::Begin("SolveButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
-        if (ImGui::Button("Solve!", ImVec2(210, 59))) {
-            // for (int i = 0; i < BOARD_SIZE; i++) {
-            //     for (int j = 0; j < BOARD_SIZE; j++) {
-            //         cout << board[i][j] << " " << flush;
-            //     }
-            //     cout << endl;
-            // }
-            bool ableToSolve = true;
-            vector<vector<char>> boardToSolve;
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                vector<char> row;
-                for (int j = 0; j < BOARD_SIZE; j++) {
-                    if (board[i][j][0] == '-') {
-                        row.push_back('.');
-                    } else if (board[i][j][0] - '0' >= 1 && board[i][j][0] - '0' <= 9) {
-                        row.push_back(board[i][j][0]);
-                    } else if (strlen(board[i][j]) == 0) {
-                        row.push_back('.');
-                    } else {
-                        ableToSolve = false;
-                        break;
-                    }
-                }
-                boardToSolve.push_back(row);
-            }
-            if (ableToSolve) {
-                solveSudoku(boardToSolve);
-            } else { 
-                cout << "NOT ABLE TO SOLVE" << endl;
-                for (int i = 0; i < BOARD_SIZE; i++) {
-                    for (int j = 0; j < BOARD_SIZE; j++) {
-                        board[i][j][0] = '-';
-                        board[i][j][1] = '\0'; 
-                    }
-                }
-            }
-
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                for (int j = 0; j < BOARD_SIZE; j++) {
-                    board[i][j][0] = (char)boardToSolve[i][j];
-                    board[i][j][1] = '\0'; 
-                }
-            }
-        }
-
-    } 
-    ImGui::End();
-
-    ImGui::SetNextWindowPos(ImVec2(704, 640));
-    ImGui::SetNextWindowSize(ImVec2(225, 75));
-    if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
-        if (ImGui::Button("Reset", ImVec2(210, 59))) {
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                for (int j = 0; j < BOARD_SIZE; j++) {
-                    board[i][j][0] = '-';
-                    board[i][j][1] = '\0';   
-                }
-            }
-        }
-
-    } 
-    ImGui::End();
 }
 
 // Main code
@@ -225,6 +81,8 @@ int main(int, char**)
     
     ImVec4 clear_color = ImVec4(130, 202, 237, 255);
         
+
+    SudokuSolver SudokuSolver;
     // Main loop
     bool done = false;
     InitializeBoard();
@@ -271,7 +129,95 @@ int main(int, char**)
 
         //Point Of Interest///////////////////////////////////////
         
-        RenderImGui();
+        ImGui::SetNextWindowPos(ImVec2(368, 48));
+        ImGui::SetNextWindowSize(ImVec2(561, 561));
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
+
+        if (ImGui::Begin("Board", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar)) {
+            int extraI = 0;
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                if (i % 3 == 0 && i != 0) {
+                    extraI += 5;
+                }
+                int extraJ = 0;
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if (j % 3 == 0 && j != 0) {
+                        extraJ += 5;
+                    }
+                    ImGui::SetCursorPos(ImVec2(8 + extraJ + j * 60, 8 + extraI + i * 60));
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+                    ImGui::SetNextItemWidth(55.0f);
+
+                    std::string id = "##" + std::to_string(i) + "_" + std::to_string(j);
+                    ImGui::InputText(id.c_str(), board[i][j], MAX_INPUT_LENGTH); 
+
+                    ImGui::PopStyleColor(2);
+                }
+            }
+        }
+        ImGui::End();
+        ImGui::PopStyleColor();
+
+        ImGui::SetNextWindowPos(ImVec2(368, 640));
+        ImGui::SetNextWindowSize(ImVec2(225, 75));
+        if (ImGui::Begin("SolveButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+            if (ImGui::Button("Solve!", ImVec2(210, 59))) {
+                bool ableToSolve = true;
+                vector<vector<char>> boardToSolve;
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    vector<char> row;
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        if (board[i][j][0] == '-') {
+                            row.push_back('.');
+                        } else if (board[i][j][0] - '0' >= 1 && board[i][j][0] - '0' <= 9) {
+                            row.push_back(board[i][j][0]);
+                        } else if (strlen(board[i][j]) == 0) {
+                            row.push_back('.');
+                        } else {
+                            ableToSolve = false;
+                            break;
+                        }
+                    }
+                    boardToSolve.push_back(row);
+                }
+                if (ableToSolve) {
+                    SudokuSolver.solveSudoku(boardToSolve);
+                } else { 
+                    cout << "NOT ABLE TO SOLVE" << endl;
+                    for (int i = 0; i < BOARD_SIZE; i++) {
+                        for (int j = 0; j < BOARD_SIZE; j++) {
+                            board[i][j][0] = '-';
+                            board[i][j][1] = '\0'; 
+                        }
+                    }
+                }
+
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        board[i][j][0] = (char)boardToSolve[i][j];
+                        board[i][j][1] = '\0'; 
+                    }
+                }
+            }
+
+        } 
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(704, 640));
+        ImGui::SetNextWindowSize(ImVec2(225, 75));
+        if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+            if (ImGui::Button("Reset", ImVec2(210, 59))) {
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        board[i][j][0] = '-';
+                        board[i][j][1] = '\0';   
+                    }
+                }
+            }
+
+        } 
+        ImGui::End();
 
 
         // Rendering
