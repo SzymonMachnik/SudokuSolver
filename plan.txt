@@ -1,8 +1,0 @@
-init sudoku char
-
-sudoku char to normalne sudoku
-roziwąż normalne sudoku
-sduoku char = normalen sudoku
-
-reset sudoku char
-
