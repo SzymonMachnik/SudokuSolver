@@ -194,9 +194,15 @@ int main(int, char**)
         ImGui::PopStyleColor();
 
         ImGui::SetNextWindowPos(ImVec2(368, 640));
-        ImGui::SetNextWindowSize(ImVec2(225, 75));
-        if (ImGui::Begin("SolveButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
-            if (ImGui::Button("Solve!", ImVec2(210, 59))) {
+        ImGui::SetNextWindowSize(ImVec2(561, 75));
+        if (ImGui::Begin("Buttons", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+            if (ImGui::Button("Load", ImVec2(176, 59))) {
+                //SudokuSolver.resetBoard(board);
+            }
+
+            ImGui::SameLine();
+            
+            if (ImGui::Button("Solve!", ImVec2(176, 59))) {
                 bool ableToSolve = true;
                 vector<vector<char>> boardToSolve;
                 SudokuSolver.translateBoardToPrintIntoBoardToSolve(board, boardToSolve, ableToSolve);
@@ -208,18 +214,39 @@ int main(int, char**)
                 }
             }
 
-        } 
-        ImGui::End();
+            // ImGui::SetCursorPos(ImVec2(8 + 10 + 6 * 60, 640));
+            // if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+            //     if (ImGui::Button("Reset", ImVec2(210, 59))) {
+            //         SudokuSolver.resetBoard(board);
+            //     }
 
-        ImGui::SetNextWindowPos(ImVec2(704, 640));
-        ImGui::SetNextWindowSize(ImVec2(225, 75));
-        if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
-            if (ImGui::Button("Reset", ImVec2(210, 59))) {
+            // }
+             // Ustawia przycisk "Reset" obok "Solve!"
+
+            // Przycisk "Reset"
+
+
+            ImGui::SameLine(); // Ustawia przycisk "Reset" obok "Solve!"
+
+            // Przycisk "Reset"
+            if (ImGui::Button("Reset", ImVec2(176, 59))) {
                 SudokuSolver.resetBoard(board);
             }
 
+            
+
         } 
         ImGui::End();
+
+        // ImGui::SetNextWindowPos(ImVec2(704, 640));
+        // ImGui::SetNextWindowSize(ImVec2(225, 75));
+        // if (ImGui::Begin("ResetButton", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+        //     if (ImGui::Button("Reset", ImVec2(210, 59))) {
+        //         SudokuSolver.resetBoard(board);
+        //     }
+
+        // } 
+        // ImGui::End();
 
 
         // Rendering
