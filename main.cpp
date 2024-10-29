@@ -197,7 +197,7 @@ int main(int, char**)
         ImGui::SetNextWindowSize(ImVec2(561, 75));
         if (ImGui::Begin("Buttons", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
             if (ImGui::Button("Load", ImVec2(176, 59))) {
-                //SudokuSolver.resetBoard(board);
+                SudokuSolver.loadSudoku(board);
             }
 
             ImGui::SameLine();

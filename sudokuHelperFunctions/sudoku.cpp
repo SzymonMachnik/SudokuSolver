@@ -97,3 +97,27 @@ void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9]
         boardToSolve.push_back(row);
     }
 }
+
+void SudokuSolver::loadSudoku(char (&board)[9][9][2]) {
+    std::ifstream inputFile;
+
+  std::string fileName = "sudokusToLoadData/1.txt";
+
+  inputFile.open(fileName);
+
+  std::vector<std::vector<char>> sudoku;
+
+  if (!inputFile.is_open()) {
+    
+  } else {
+    std::string line;
+    int r = 0;
+    while (getline(inputFile, line)) {
+      for (int i = 0; i < 9; i++) {
+        board[r][i][0] = line[i];
+      }
+      r++;
+    }
+    inputFile.close();
+  }
+}
