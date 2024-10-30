@@ -101,7 +101,7 @@ void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9]
 void SudokuSolver::loadSudoku(char (&board)[9][9][2]) {
   std::ifstream inputFile;
 
-  std::string fileName = "sudokusToLoadData/3.txt";
+  std::string fileName = "sudokusToLoadData/5.txt";
 
   inputFile.open(fileName);
 
