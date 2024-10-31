@@ -59,16 +59,16 @@ int main(int, char**)
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
-  io.Fonts->AddFontDefault();
-  io.FontGlobalScale = 3.7f;
-
+  io.Fonts->Clear();
+  ImFont* font = io.Fonts->AddFontFromFileTTF("./fonts/Roboto-Medium.ttf", 45.0f);
+  io.Fonts->Build();
   ImGuiStyle& style = ImGui::GetStyle();
   style.Colors[ImGuiCol_WindowBg] = ImVec4(153, 153, 153, 255);
-
   
   ImVec4 clear_color = ImVec4(130, 202, 237, 255);
       
 
+  // Initialize Sudoku Solver and board
   SudokuSolver SudokuSolver;
   SudokuSolver.InitializeBoard(board);
 

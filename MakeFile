@@ -1,2 +1,2 @@
 all:
-    g++ -fdiagnostics-color=always -std=c++23 -g sudokuHelperFunctions/sudoku.cpp C:\SudokuSolver\main.cpp C:\SudokuSolver\imgui\*.cpp -o C:\SudokuSolver\main.exe -I C:\SudokuSolver\imgui -ld3d9 -ldwmapi -lgdi32
+	g++ main.cpp -o main.exe sudokuHelperFunctions/sudoku.cpp imgui/*.cpp -I imgui -ld3d9 -ldwmapi -lgdi32
