@@ -79,7 +79,7 @@ void SudokuSolver::translateSolvedBoardIntoBoardToPrint(char (&boardToPrint)[9][
   }
 }
 
-void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &boardToSolve, bool &ableToSolve) {
+void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9][9][2], std::vector<std::vector<char>> &boardToSolve, bool &correctSudoku) {
   for (int i = 0; i < 9; i++) {
     std::vector<char> row;
     for (int j = 0; j < 9; j++) {
@@ -90,7 +90,7 @@ void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9]
       } else if (boardToPrint[i][j][0] == '\0') {
         row.push_back('.');
       } else {
-        ableToSolve = false;
+        correctSudoku = false;
         break;
       }
     }
@@ -98,10 +98,36 @@ void SudokuSolver::translateBoardToPrintIntoBoardToSolve(char (&boardToPrint)[9]
   }
 }
 
+void SudokuSolver::sudokuAbleToSolve(std::vector<std::vector<char>> &correctBoard, bool &ableToSolve) {
+  std::unordered_set<int> rows[9];
+  std::unordered_set<int> columns[9];
+  std::unordered_set<int> boxes[9];
+
+  for (int r = 0; r < 9; r++) {
+      for (int c = 0; c < 9; c++) {
+          if (correctBoard[r][c] == '.') continue;
+
+          char value = correctBoard[r][c];
+          int boxIndex = (r / 3) * 3 + c / 3;
+
+          if (rows[r].count(value) || columns[c].count(value) || boxes[boxIndex].count(value)) {
+            ableToSolve = false;
+            return;
+          }
+          rows[r].insert(value);
+          columns[c].insert(value);
+          boxes[boxIndex].insert(value);
+      }
+  }
+}
+
 void SudokuSolver::loadSudoku(char (&board)[9][9][2]) {
   std::ifstream inputFile;
 
-  std::string fileName = "sudokusToLoadData/5.txt";
+  const char RANDOMSUDOKUNUMBER = int(1. * rand() / RAND_MAX * 9) + 1 + '0';
+  std::string fileName = "sudokusToLoadData/";
+  fileName += RANDOMSUDOKUNUMBER;
+  fileName += ".txt";
 
   inputFile.open(fileName);
 

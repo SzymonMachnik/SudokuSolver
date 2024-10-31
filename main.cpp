@@ -161,10 +161,14 @@ int main(int, char**)
       
       // Solve button
       if (ImGui::Button("Solve!", ImVec2(176, 59))) {
-        bool ableToSolve = true;
+        bool correctSudoku = true;
         vector<vector<char>> boardToSolve;
-        SudokuSolver.translateBoardToPrintIntoBoardToSolve(board, boardToSolve, ableToSolve);
-        if (ableToSolve) {
+        SudokuSolver.translateBoardToPrintIntoBoardToSolve(board, boardToSolve, correctSudoku);
+        bool ableToSolve = true;
+        if (correctSudoku) {
+          SudokuSolver.sudokuAbleToSolve(boardToSolve, ableToSolve);
+        }
+        if (correctSudoku && ableToSolve) {
           SudokuSolver.solveSudoku(boardToSolve);
           SudokuSolver.translateSolvedBoardIntoBoardToPrint(board, boardToSolve);
         } else { 
