@@ -1,6 +1,15 @@
 ## `📃` Introduction
 I have created this project beacuse I have been strongly interested with mathematical side of Sudoku. It motivated me to try my best and design an algorithm basing on back tracking method which is able to solve this japanese game in miliseconds time.
 ## `📦` How to use
+- **Download project:** Click the green button "Code" in top-right corner and choose the option "Download by zip".
+- **Extract zip:** Extract zip file on your computer.
+- **Run project:**  
+    Use this to commands:
+    ```
+    cd path/to/SudokuSolver
+    main.exe
+    ```
+- **Enjoy!**
 ## `✨` Features
 - **Algotihm:** I have designed high-performance alogrithm using back tracking and unorderset to save memory. I put the pseudocode below.
 - **User abilities:** User is able to enter sudoku by his own but also can the built in "load" function which fills board by random sudoku.
