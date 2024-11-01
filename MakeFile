@@ -1,2 +1,3 @@
 all:
 	g++ main.cpp -o main.exe sudokuHelperFunctions/sudoku.cpp imgui/*.cpp -I imgui -ld3d9 -ldwmapi -lgdi32
+	# g++ main.cpp -o main.exe sudokuHelperFunctions/sudoku.cpp imgui/*.cpp -I imgui -ld3d9 -ldwmapi -lgdi32 -static
