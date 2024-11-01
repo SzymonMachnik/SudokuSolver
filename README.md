@@ -29,8 +29,8 @@ Function solveSudoku(&board):
   Call backTrack(board, 0, 0, solved)
 ```
 ## `📜` Credits
-Dear ImGui for graphical user interface:  
-- Github: https://github.com/ocornut/imgui  
-- Website: https://github.com/ocornut/imgui  
-Roboto font for letters style:  
+Dear ImGui for graphical user interface:
+- Github: https://github.com/ocornut/imgui
+- Website: https://github.com/ocornut/imgui
+Roboto font for letters style:
 - https://fonts.google.com/specimen/Roboto
