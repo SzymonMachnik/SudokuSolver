@@ -3,12 +3,7 @@ I have created this project beacuse I have been strongly interested with mathema
 ## `📦` How to use
 - **Download project:** Click the green button "Code" in top-right corner and choose the option "Download ZIP".
 - **Extract zip:** Extract zip file on your computer.
-- **Run project:**  
-    Use this two commands in terminal:
-    ```
-    cd path/to/SudokuSolver
-    main.exe
-    ```
+- **Run project:** Open the "main.exe" file.
 - **Enjoy!**
 ## `✨` Features
 - **Algotihm:** I have designed high-performance alogrithm using back tracking and unorderset to save memory. I put the pseudocode below.
