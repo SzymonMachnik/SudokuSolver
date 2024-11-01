@@ -1,7 +1,7 @@
 ## `📃` Brief description
 I have created this project beacuse I have been strongly interested with mathematical side of Sudoku. It motivated me to try my best and design an algorithm basing on back tracking method which is able to solve this japanese game in miliseconds time.
 ## `📦` How to use
-- **Download project:** Click the green button "Code" in top-right corner and choose the option "Download by zip".
+- **Download project:** Click the green button "Code" in top-right corner and choose the option "Download ZIP".
 - **Extract zip:** Extract zip file on your computer.
 - **Run project:**  
     Use this two commands in terminal:
