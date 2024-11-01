@@ -2,8 +2,8 @@
 I have created this project beacuse I have been strongly interested with mathematical side of Sudoku. It motivated me to try my best and design an algorithm basing on back tracking method which is able to solve this japanese game in miliseconds time.
 ## `📦` How to use
 ## `✨` Features
-- **Algotihm** I have designed high performence alogrithm using back tracking and unorderset to save memory. I put the pseudocode below.
-- **User abilities** User is able to enter sudoku by his own but also can the built in "load" function which fills board by random sudoku.
+- **Algotihm:** I have designed high performence alogrithm using back tracking and unorderset to save memory. I put the pseudocode below.
+- **User abilities:** User is able to enter sudoku by his own but also can the built in "load" function which fills board by random sudoku.
 ## `⚙` How algorithm works
 ```
 Function isValid(r, c, value, &board):
