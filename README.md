@@ -34,4 +34,4 @@ Dear ImGui for graphical user interface:
 - Website: https://github.com/ocornut/imgui
 
 Roboto font for letters style:
-- https://fonts.google.com/specimen/Roboto
+- Website: https://fonts.google.com/specimen/Roboto
