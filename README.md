@@ -1,14 +1,12 @@
-## `📃` Brief description
-I have created this project beacuse I have been strongly interested with mathematical side of Sudoku. It motivated me to try my best and design an algorithm basing on back tracking method which is able to solve this japanese game in miliseconds time.
-## `📦` How to use
-- **Download project:** Click the green button "Code" in top-right corner and choose the option "Download ZIP".
-- **Extract zip:** Extract zip file on your computer.
-- **Run project:** Open the "main.exe" file.
-- **Enjoy!**
-## `✨` Features
-- **Algotihm:** I have designed high-performance alogrithm using back tracking and unorderset to save memory. I put the pseudocode below.
-- **User abilities:** User is able to enter sudoku by his own but also can use the built in "load" function which fills board by random sudoku.
-## `⚙` How algorithm works
+# 🧩 Sudoku Solver
+## 📃 Brief description
+I have created this project beacuse I have been strongly interested in mathematical side of Sudoku. It has motivated me to try my best and design an algorithm basing on back tracking method which is able to solve this japanese game in no time.
+## ✨ Features
+### Algorithm:
+  - I have designed high-performance alogrithm using back tracking and unordered set to save memory. I put the pseudocode below.
+### User abilities:
+  - User is able to enter sudoku by his own but also he can use the built in "load" function which fills board by random sudoku.
+## ⚙ How algorithm works
 ```
 Function isValid(r, c, value, &board):
   For i from 0 to 8:
@@ -32,10 +30,10 @@ Function solveSudoku(&board):
   Set solved to false
   Call backTrack(board, 0, 0, solved)
 ```
-## `📜` Credits
-Dear ImGui for graphical user interface:
+## 📜 Credits
+### Dear ImGui for graphical user interface:
 - Github: https://github.com/ocornut/imgui
 - Website: https://github.com/ocornut/imgui
 
-Roboto font for letters style:
+### Roboto font for letters style:
 - Website: https://fonts.google.com/specimen/Roboto
