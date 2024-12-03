@@ -1,0 +1,9 @@
+C:\SudokuSolver\imgui\imgui.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui.obj
+C:\SudokuSolver\imgui\imgui_demo.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui_demo.obj
+C:\SudokuSolver\imgui\imgui_draw.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui_draw.obj
+C:\SudokuSolver\imgui\imgui_impl_dx9.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui_impl_dx9.obj
+C:\SudokuSolver\imgui\imgui_impl_win32.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui_impl_win32.obj
+C:\SudokuSolver\imgui\imgui_tables.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui_tables.obj
+C:\SudokuSolver\imgui\imgui_widgets.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\imgui_widgets.obj
+C:\SudokuSolver\main.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\main.obj
+C:\SudokuSolver\sudokuHelperFunctions\sudoku.cpp;C:\SudokuSolver\build\SudokuSolver.dir\Debug\sudoku.obj

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_set>
+#include <sstream>
 
 class SudokuSolver {
   private:

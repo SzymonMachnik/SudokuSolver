@@ -6,6 +6,7 @@
 #include "./sudokuHelperFunctions/sudoku.h"
 #include <d3d9.h>
 #include <tchar.h>
+#include <string>
 
 using namespace std;
 
@@ -138,7 +139,7 @@ int main(int, char**)
           ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
           ImGui::SetNextItemWidth(55.0f);
 
-          std::string id = "##" + std::to_string(i) + "_" + std::to_string(j);
+          string id = "##" + to_string(i) + "_" + to_string(j);
           ImGui::InputText(id.c_str(), board[i][j], MAX_INPUT_LENGTH); 
 
           ImGui::PopStyleColor(2);
