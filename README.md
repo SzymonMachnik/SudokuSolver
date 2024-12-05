@@ -30,19 +30,6 @@ Function solveSudoku(&board):
   Set solved to false
   Call backTrack(board, 0, 0, solved)
 ```
-## 📦 Instalation
-### Copy these commands into project folder for building:
-```
-mkdir build
-cd build
-cmake ..
-cmake --build .
-```
-### Copy these commands for running project:
-```
-cd Debug
-.\SudokuSolver.exe
-```
 ## 📜 Credits
 ### Dear ImGui for graphical user interface:
 - Github: https://github.com/ocornut/imgui
