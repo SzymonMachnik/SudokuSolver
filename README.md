@@ -30,6 +30,10 @@ Function solveSudoku(&board):
   Set solved to false
   Call backTrack(board, 0, 0, solved)
 ```
+
+## 📒 To-Do
+### - Add scanning sudoku from peace of paper by camera.
+
 ## 📜 Credits
 ### Dear ImGui for graphical user interface:
 - Github: https://github.com/ocornut/imgui
